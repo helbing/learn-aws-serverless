@@ -22,8 +22,8 @@ export const handler: S3Handler = async (event: S3Event): Promise<void> => {
         }),
       )
 
-      console.log("resizedBucketName:", resizedBucketName)
-      console.log("resizeKey:", resizeKey)
+      // console.log("resizedBucketName:", resizedBucketName)
+      // console.log("resizeKey:", resizeKey)
     })
   } catch (error) {
     console.log("err:", error)
