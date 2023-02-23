@@ -2,9 +2,6 @@
   "name": "learn-aws-serverless",
   "version": "1.0.0",
   "description": "This is a completely example of learning AWS Serverless",
-  "bin": {
-    "app": "bin/app.js"
-  },
   "scripts": {
     "postinstall": "husky install",
     "build:ts": "tsc",
