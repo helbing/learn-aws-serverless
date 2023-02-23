@@ -6,9 +6,7 @@
     "postinstall": "husky install",
     "build:ts": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cdk": "cdk",
-    "pre-commit": "lint-staged",
-    "commit-msg": "commitlint --edit $1"
+    "cdk": "cdk"
   },
   "keywords": [
     "aws",
