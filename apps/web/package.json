@@ -1,0 +1,12 @@
+{
+  "name": "learn-aws-serverless/apps/web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/app.js",
+  "keywords": [],
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "helbing",
+  "license": "MIT"
+}
