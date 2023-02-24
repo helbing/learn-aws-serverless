@@ -10,3 +10,13 @@ cdk.out
 
 *.js
 *.d.ts
+
+# jest
+coverage
+
+# env
+*.env$
+.env*
+
+# turbo
+.turbo/
