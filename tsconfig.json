@@ -19,6 +19,7 @@
   "exclude": [
     "node_modules",
     "tests",
+    "**/*.d.ts",
     "jest.config.ts",
     "**/*.test.ts",
     "cdk.out"
