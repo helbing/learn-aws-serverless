@@ -16,8 +16,8 @@
   "scripts": {
     "preinstall": "npx -y only-allow pnpm",
     "postinstall": "husky install",
-    "clean": "",
-    "build": "clean && turbo run build",
+    "clean": "rimraf apps/**/*.js packages/**/*.d.ts",
+    "build": "turbo run build",
     "test": "jest"
   },
   "devDependencies": {
@@ -25,6 +25,7 @@
     "@changesets/cli": "^2.26.0",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
+    "@las/tsconfig": "workspace:^1.0.0",
     "@types/aws-lambda": "^8.10.110",
     "@types/jest": "^29.4.0",
     "@types/node": "^18.14.0",
@@ -43,6 +44,7 @@
     "jest-config": "^29.4.3",
     "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
+    "rimraf": "^4.1.2",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "turbo": "^1.8.2",

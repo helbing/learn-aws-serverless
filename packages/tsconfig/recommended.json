@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
@@ -18,10 +19,7 @@
   },
   "exclude": [
     "node_modules",
-    "tests",
-    "**/*.d.ts",
     "jest.config.ts",
-    "**/*.test.ts",
-    "cdk.out"
+    "**/*.test.ts"
   ]
 }

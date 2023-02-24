@@ -1,0 +1,14 @@
+{
+  "name": "@las/tsconfig",
+  "version": "1.0.0",
+  "description": "tsconfig",
+  "keywords": [
+    "tsconfig"
+  ],
+  "files": [
+    "*.json",
+    "README.md"
+  ],
+  "author": "helbing",
+  "license": "MIT"
+}

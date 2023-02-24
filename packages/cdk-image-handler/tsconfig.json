@@ -1,0 +1,7 @@
+{
+  "extends": "@las/tsconfig/recommended",
+  "compilerOptions": {
+    "outDir": "dist",
+  },
+  "exclude": ["dist"]
+}

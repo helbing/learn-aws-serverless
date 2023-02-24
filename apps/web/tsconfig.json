@@ -1,0 +1,6 @@
+{
+  "extends": "@las/tsconfig/recommended",
+  "exclude": [
+    "cdk.out"
+  ]
+}
