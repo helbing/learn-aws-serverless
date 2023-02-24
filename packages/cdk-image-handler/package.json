@@ -1,8 +1,10 @@
 {
-  "name": "learn-aws-serverless/packages/cdk-image-handler",
+  "name": "@las/cdk-image-handler",
   "version": "1.0.0",
   "description": "CDK Construct of s3 => image handler lambda => s3",
-  "main": "index.js",
+  "type": "module",
+  "module": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "tsc"
   },

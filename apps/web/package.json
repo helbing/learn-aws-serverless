@@ -1,5 +1,5 @@
 {
-  "name": "learn-aws-serverless/apps/web",
+  "name": "@las/web",
   "version": "1.0.0",
   "description": "",
   "main": "bin/app.js",
@@ -8,5 +8,8 @@
     "build": "tsc"
   },
   "author": "helbing",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@las/cdk-image-handler": "workspace:^1.0.0"
+  }
 }
