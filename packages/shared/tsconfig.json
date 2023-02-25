@@ -2,7 +2,6 @@
   "extends": "@las/tsconfig/recommended",
   "compilerOptions": {
     "outDir": "dist",
-    "esModuleInterop": true
   },
   "exclude": ["dist"]
 }
