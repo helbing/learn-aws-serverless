@@ -1,0 +1,3 @@
+{
+  "extends": "@las/tsconfig/recommended"
+}

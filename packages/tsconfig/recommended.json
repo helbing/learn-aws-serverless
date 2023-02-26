@@ -19,7 +19,6 @@
   },
   "exclude": [
     "node_modules",
-    "jest.config.ts",
-    "**/*.test.ts"
+    "jest.config.ts"
   ]
 }
