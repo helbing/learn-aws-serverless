@@ -1,0 +1,11 @@
+{
+  "extends": "@las/tsconfig/recommended",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "exclude": [
+    "lambda",
+    "tests"
+  ]
+}

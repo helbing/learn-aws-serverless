@@ -1,0 +1,27 @@
+{
+  "name": "@las/cc-thumbnail",
+  "version": "1.0.0",
+  "description": "CDK Construct of s3 => generate thumbnail lambda => s3",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "pnpm run clean && tsc -p tsconfig.build.json"
+  },
+  "keywords": [
+    "aws",
+    "cdk",
+    "construct"
+  ],
+  "author": "helbing",
+  "license": "MIT",
+  "dependencies": {
+    "@las/tsconfig": "workspace:^1.0.0",
+    "aws-cdk-lib": "^2.66.1",
+    "aws-lambda": "^1.0.7",
+    "constructs": "^10.1.261",
+    "sharp": "^0.31.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.111"
+  }
+}

@@ -8,6 +8,7 @@ lerna-debug.log*
 .cdk.staging
 cdk.out
 
+# less js
 *.js
 *.d.ts
 
