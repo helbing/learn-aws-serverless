@@ -1,5 +1,5 @@
 {
-  "(apps|packages)/**/*.tsx?": [
+  "**/*.tsx?": [
     "eslint --fix"
   ]
 }
