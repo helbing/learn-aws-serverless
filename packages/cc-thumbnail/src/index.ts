@@ -34,20 +34,14 @@ export interface ThumbnailStackProps {
 }
 
 export class Thumbnail extends Construct {
-  /**
-   * The destination bucket name after the lambda handled, the value is
-   * {$props.bucketName}-resized
-   */
-  readonly destBucketName: string
-
   constructor(scope: Construct, id: string, props?: ThumbnailStackProps) {
     super(scope, id)
 
     const bucketName = props?.bucketName || "demo"
     const resizWidth = (props?.resizeWidth || 100).toString()
-    const destBucketName = (this.destBucketName = bucketName + "-resized")
+    const destBucketName = bucketName + "-resized"
 
-    const fn = new NodejsFunction(this, "thumbnail", {
+    const handler = new NodejsFunction(this, "thumbnail", {
       runtime: Runtime.NODEJS_18_X,
       entry: path.join(__dirname, "../lambda/index.ts"),
       timeout: Duration.minutes(1),
@@ -72,11 +66,11 @@ export class Thumbnail extends Construct {
       autoDeleteObjects: true,
     })
 
-    bucket.grantRead(fn)
+    bucket.grantRead(handler)
 
     bucket.addEventNotification(
       EventType.OBJECT_CREATED,
-      new LambdaDestination(fn),
+      new LambdaDestination(handler),
     )
 
     new CfnOutput(this, "bucketName", {
@@ -93,7 +87,7 @@ export class Thumbnail extends Construct {
       autoDeleteObjects: true,
     })
 
-    destBucket.grantWrite(fn)
+    destBucket.grantWrite(handler)
 
     new CfnOutput(this, "destBucketName", {
       value: destBucket.bucketName,

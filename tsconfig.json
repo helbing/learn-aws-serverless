@@ -3,7 +3,5 @@
   "exclude": [
     "jest.config.ts",
     "*.test.ts",
-    "tests",
-    "lambda"
   ]
 }
