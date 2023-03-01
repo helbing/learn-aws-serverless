@@ -4,8 +4,8 @@ import { Thumbnail, ThumbnailStackProps } from "../src/index"
 
 describe("Test construct is generate succcess", () => {
   const app = new App()
-  const stack = new Stack(app, "TestConstruct")
-  new Thumbnail(stack, "testing-cc-thumbnail", {} as ThumbnailStackProps)
+  const stack = new Stack(app, "s3-thumbnail-test")
+  new Thumbnail(stack, "thumbnail", {} as ThumbnailStackProps)
 
   const template = Template.fromStack(stack)
 

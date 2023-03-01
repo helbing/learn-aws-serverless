@@ -1,9 +1,0 @@
-{
-  "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "ms-vscode.vscode-typescript-next",
-    "orta.vscode-jest",
-    "amazonwebservices.aws-toolkit-vscode",
-    "editorconfig.editorconfig"
-  ]
-}
