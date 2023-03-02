@@ -3,11 +3,10 @@ import * as path from "path"
 import thumbnail from "../lambda/thumbnail"
 
 describe("Generate thumbnail", () => {
-  const buffer = fs.readFileSync(
-    path.join(__dirname, "../tests/testdata/test.png"),
-  )
-
-  test("Expect succcess", async () => {
+  test("Expect match image", async () => {
+    const buffer = fs.readFileSync(
+      path.join(__dirname, "../tests/testdata/test.png"),
+    )
     const expectBuffer = fs.readFileSync(
       path.join(__dirname, "../tests/testdata/test-thumbnail.png"),
     )

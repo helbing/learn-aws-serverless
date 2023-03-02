@@ -19,10 +19,12 @@
     "aws-cdk-lib": "^2.66.1",
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1325.0",
+    "aws-sdk-mock": "^5.8.0",
     "constructs": "^10.1.261",
     "sharp": "^0.31.3"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.111"
+    "@types/aws-lambda": "^8.10.111",
+    "@types/sharp": "^0.31.1"
   }
 }

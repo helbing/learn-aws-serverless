@@ -17,6 +17,21 @@ export interface ThumbnailLambdaEnvs {
    * Thumbnail width
    */
   RESIZE_WIDTH: string
+
+  /**
+   * SupportImageType
+   *
+   * @default png,jpg
+   */
+  SUPPORT_IMAGE_TYPES: string
+}
+
+export enum imageTypes {
+  PNG = "png",
+  JPEG = "jpg",
+  GIF = "gif",
+  SVG = "svg",
+  WEBP = "webp",
 }
 
 export interface ThumbnailStackProps {
@@ -31,6 +46,13 @@ export interface ThumbnailStackProps {
    * @default 100
    */
   readonly resizeWidth?: number
+
+  /**
+   * Image types
+   *
+   * @default [imageTypes.PNG, imageTypes.JPEG]
+   */
+  readonly imageTypes?: imageTypes[]
 }
 
 export class Thumbnail extends Construct {
@@ -58,13 +80,37 @@ export class Thumbnail extends Construct {
   constructor(scope: Construct, id: string, props?: ThumbnailStackProps) {
     super(scope, id)
 
-    if (props?.bucketName == undefined) {
+    const bucketName = props?.bucketName
+    const destBucketName = bucketName + "-resized"
+    if (bucketName == undefined) {
       throw new BucketUndefinedError()
     }
 
-    const bucketName = props?.bucketName || "demo"
-    const destBucketName = bucketName + "-resized"
-    const resizWidth = (props?.resizeWidth || 100).toString()
+    const resizWidth = props?.resizeWidth || 100
+    if (resizWidth < 1 || resizWidth > 300) {
+      throw new ValidateResizeWidthError(1, 300)
+    }
+
+    const supportImageTypes = props?.imageTypes || [
+      imageTypes.PNG,
+      imageTypes.JPEG,
+    ]
+    if (supportImageTypes.length == 0) {
+      throw new NoImageTypesError()
+    }
+
+    this.bucket = new Bucket(this, "bucket", {
+      bucketName: bucketName,
+      removalPolicy: RemovalPolicy.DESTROY,
+      // NOTICE: in real-world application don't auto delete objects
+      autoDeleteObjects: true,
+    })
+
+    this.destBucket = new Bucket(this, "destBucket", {
+      bucketName: destBucketName,
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+    })
 
     this.handler = new NodejsFunction(this, "thumbnail", {
       runtime: Runtime.NODEJS_18_X,
@@ -80,37 +126,36 @@ export class Thumbnail extends Construct {
         },
       },
       environment: {
-        DEST_BUCKET: destBucketName,
-        RESIZE_WIDTH: resizWidth,
+        DEST_BUCKET: this.destBucket.bucketName,
+        RESIZE_WIDTH: resizWidth.toString(),
+        SUPPORT_IMAGE_TYPES: supportImageTypes.toString(),
       } as ThumbnailLambdaEnvs,
     })
 
-    this.bucket = new Bucket(this, "bucket", {
-      bucketName: bucketName,
-      removalPolicy: RemovalPolicy.DESTROY,
-      // NOTICE: in real-world application don't auto delete objects
-      autoDeleteObjects: true,
-    })
-
     this.bucket.grantRead(this.handler)
+    this.destBucket.grantWrite(this.handler)
 
     this.bucket.addEventNotification(
       EventType.OBJECT_CREATED,
       new LambdaDestination(this.handler),
     )
-
-    this.destBucket = new Bucket(this, "destBucket", {
-      bucketName: destBucketName,
-      removalPolicy: RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-    })
-
-    this.destBucket.grantWrite(this.handler)
   }
 }
 
 export class BucketUndefinedError extends Error {
   constructor() {
     super("Bucket is undefined")
+  }
+}
+
+export class ValidateResizeWidthError extends Error {
+  constructor(start: number, end: number) {
+    super(`Validate resizedWidth error, it's between ${start} and ${end}`)
+  }
+}
+
+export class NoImageTypesError extends Error {
+  constructor() {
+    super("No image types")
   }
 }
