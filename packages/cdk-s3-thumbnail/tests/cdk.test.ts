@@ -1,46 +1,24 @@
 import { Template } from "aws-cdk-lib/assertions"
 import { App, Stack } from "aws-cdk-lib"
-import { Thumbnail, ThumbnailStackProps } from "../src/index"
+import {
+  Thumbnail,
+  ThumbnailStackProps,
+  BucketUndefinedError,
+} from "../src/index"
 
-describe("Test construct is generate succcess", () => {
-  const app = new App()
-  const stack = new Stack(app, "s3-thumbnail-test")
-  new Thumbnail(stack, "thumbnail", {} as ThumbnailStackProps)
-
-  const template = Template.fromStack(stack)
-
-  test("Expect Lambda generate succcess", () => {
-    template.hasResourceProperties("AWS::Lambda::Function", {
-      Environment: {
-        Variables: {
-          DEST_BUCKET: "demo-resized",
-          RESIZE_WIDTH: "100",
-        },
-      },
-      Handler: "index.handler",
-      MemorySize: 1024,
-      Runtime: "nodejs18.x",
-      Timeout: 60,
-    })
+describe("Test constructs build succcess", () => {
+  test("Expect throw BucketUndefinedError", () => {
+    expect(() => {
+      new Thumbnail(new Stack(), "thumbnail", {} as ThumbnailStackProps)
+    }).toThrow(BucketUndefinedError)
   })
 
-  test("Expect S3 bucket generate succcess", () => {
-    template.hasResource("AWS::S3::Bucket", {
-      Properties: {
-        BucketName: "demo",
-      },
-      UpdateReplacePolicy: "Delete",
-      DeletionPolicy: "Delete",
+  test("Expect match snapshot", () => {
+    const app = new App()
+    const stack = new Stack(app, "s3-thumbnail-test")
+    new Thumbnail(stack, "thumbnail", {
+      bucketName: "demo",
     })
-  })
-
-  test("Expect s3 destination bucket generate succcess", () => {
-    template.hasResource("AWS::S3::Bucket", {
-      Properties: {
-        BucketName: "demo-resized",
-      },
-      UpdateReplacePolicy: "Delete",
-      DeletionPolicy: "Delete",
-    })
+    expect(Template.fromStack(stack).toJSON()).toMatchSnapshot()
   })
 })

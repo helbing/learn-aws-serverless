@@ -87,9 +87,8 @@ export class Thumbnail extends Construct {
 
     this.bucket = new Bucket(this, "bucket", {
       bucketName: bucketName,
-      // NOTICE: in real-world project, you should set it to
-      // RemovalPolicy.RETAIN, and don't auto delete objects
       removalPolicy: RemovalPolicy.DESTROY,
+      // NOTICE: in real-world application don't auto delete objects
       autoDeleteObjects: true,
     })
 
