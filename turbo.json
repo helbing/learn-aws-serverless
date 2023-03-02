@@ -9,6 +9,9 @@
         "dist/**"
       ]
     },
+    "clean": {
+      "cache": false
+    },
     "test": {},
     "coverage": {}
   }
