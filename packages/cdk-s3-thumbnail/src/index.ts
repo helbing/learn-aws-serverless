@@ -80,6 +80,8 @@ export class Thumbnail extends Construct {
   constructor(scope: Construct, id: string, props?: ThumbnailStackProps) {
     super(scope, id)
 
+    console.log("test")
+
     const bucketName = props?.bucketName
     const destBucketName = bucketName + "-resized"
     if (bucketName == undefined) {
