@@ -1,4 +1,4 @@
-import { handler, typeMatch } from "./index"
+import { typeMatch } from "./index"
 
 describe("Check image type", () => {
   test("Expect match success", () => {
