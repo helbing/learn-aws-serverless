@@ -9,13 +9,13 @@ import {
 import { ThumbnailLambdaEnvs } from "../src/index"
 
 describe("Run lambda handler", () => {
-  // test("Expect throw Error, S3Event records == 0 or records > 1", async () => {
-  //   expect(
-  //     lambdaHandler({
-  //       Records: [mock<S3EventRecord>(), mock<S3EventRecord>()],
-  //     }),
-  //   ).rejects.toThrow(new IllegalRecordSizeError())
-  // })
+  test("Expect throw Error, S3Event records == 0 or records > 1", async () => {
+    expect(
+      lambdaHandler({
+        Records: [mock<S3EventRecord>(), mock<S3EventRecord>()],
+      }),
+    ).rejects.toThrow(new IllegalRecordSizeError())
+  })
 
   test("Expect throw Error, Not supported image type", async () => {
     process.env = {
