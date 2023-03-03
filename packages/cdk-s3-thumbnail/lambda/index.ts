@@ -1,21 +1,28 @@
 import { S3Event } from "aws-lambda"
-import { ThumbnailLambdaEnvs } from "../src/index"
-import { S3 } from "@aws-sdk/client-s3"
+import {
+  S3Client,
+  GetObjectCommand,
+  PutObjectCommand,
+} from "@aws-sdk/client-s3"
 import middy from "@middy/core"
 import { Readable } from "stream"
 import { streamToBuffer } from "@jorgeferrero/stream-to-buffer"
+import { ThumbnailLambdaEnvs } from "../src/index"
 import thumbnail from "./thumbnail"
-
-const s3 = new S3({})
 
 export const handler = middy().handler(lambdaHandler)
 
 export async function lambdaHandler(event: S3Event) {
+  const envs = process.env as ThumbnailLambdaEnvs
+
+  if (envs.DEST_BUCKET == "") {
+    throw new DestBucketUnsetError()
+  }
+
   if (event.Records.length == 0 || event.Records.length > 1) {
     throw new IllegalRecordSizeError()
   }
 
-  const envs = process.env as ThumbnailLambdaEnvs
   const record = event.Records[0]
   const key = record.s3.object.key
 
@@ -23,20 +30,26 @@ export async function lambdaHandler(event: S3Event) {
     throw new NotSupportImageTypeError()
   }
 
-  const image = await s3.getObject({
-    Bucket: record.s3.bucket.name,
-    Key: record.s3.object.key,
-  })
+  const s3 = new S3Client({})
+
+  const image = await s3.send(
+    new GetObjectCommand({
+      Bucket: record.s3.bucket.name,
+      Key: record.s3.object.key,
+    }),
+  )
 
   const buffer = await streamToBuffer(image.Body as Readable)
   const resizedBuffer = await thumbnail(buffer, parseInt(envs.RESIZE_WIDTH))
 
-  await s3.putObject({
-    Bucket: envs.DEST_BUCKET,
-    Key: record.s3.object.key,
-    Body: resizedBuffer,
-    ContentType: image.ContentType,
-  })
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: envs.DEST_BUCKET,
+      Key: record.s3.object.key,
+      Body: resizedBuffer,
+      ContentType: image.ContentType,
+    }),
+  )
 
   return null
 }
@@ -49,6 +62,12 @@ export function typeMatch(supportImageTypes: string[], key: string) {
   }
   const imageType = typeMatch[1].toLowerCase()
   return supportImageTypes.includes(imageType)
+}
+
+export class DestBucketUnsetError extends Error {
+  constructor() {
+    super("Destination bucket unset")
+  }
 }
 
 export class IllegalRecordSizeError extends Error {

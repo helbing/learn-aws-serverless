@@ -67,8 +67,7 @@ importers:
       '@types/sharp': ^0.31.1
       aws-cdk-lib: ^2.66.1
       aws-lambda: ^1.0.7
-      aws-sdk: ^2.1325.0
-      aws-sdk-mock: ^5.8.0
+      aws-sdk-client-mock: ^2.0.1
       aws-xray-sdk-core: ^3.4.1
       constructs: ^10.1.261
       jest-mock-extended: ^3.0.3
@@ -81,8 +80,7 @@ importers:
       '@middy/event-normalizer': 4.2.6
       aws-cdk-lib: 2.66.1_constructs@10.1.261
       aws-lambda: 1.0.7
-      aws-sdk: 2.1325.0
-      aws-sdk-mock: 5.8.0
+      aws-sdk-client-mock: 2.0.1
       aws-xray-sdk-core: 3.4.1
       constructs: 10.1.261
       sharp: 0.31.3
@@ -2615,6 +2613,16 @@ packages:
       '@types/node': 18.14.2
     dev: true
 
+  /@types/sinon/10.0.13:
+    resolution: {integrity: sha512-UVjDqJblVNQYvVNUsj0PuYYw0ELRmgt1Nt5Vk0pT5f16ROGfcKJY8o1HVuMOJOpD727RrGB9EGvoaTQE5tgxZQ==}
+    dependencies:
+      '@types/sinonjs__fake-timers': 8.1.2
+    dev: false
+
+  /@types/sinonjs__fake-timers/8.1.2:
+    resolution: {integrity: sha512-9GcLXF0/v3t80caGs5p2rRfkB+a8VBGLJZVih6CNFkx8IZ994wiKKLSRs9nuFwk1HevWs/1mnUmkApGrSGsShA==}
+    dev: false
+
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
     dev: true
@@ -2993,12 +3001,12 @@ packages:
       watchpack: 2.4.0
     dev: false
 
-  /aws-sdk-mock/5.8.0:
-    resolution: {integrity: sha512-s0Vy4DObFmVJ6h1uTw1LGInOop77oF0JXH2N39Lv+1Wss274EowVk9odhM4Sji4mynXcM5oSu68uYqkJRviDRA==}
+  /aws-sdk-client-mock/2.0.1:
+    resolution: {integrity: sha512-Ib/AnI8ZdoIxOBbKSs28TUwJb7FI/AYVYn48PcXx6guk5fBs4GZJJEc+Ci9aImRtVmgO6jHN/6Etz17fr6j3qw==}
     dependencies:
-      aws-sdk: 2.1325.0
+      '@types/sinon': 10.0.13
       sinon: 14.0.2
-      traverse: 0.6.7
+      tslib: 2.5.0
     dev: false
 
   /aws-sdk/2.1325.0:
@@ -7008,10 +7016,6 @@ packages:
     dependencies:
       is-number: 7.0.0
     dev: true
-
-  /traverse/0.6.7:
-    resolution: {integrity: sha512-/y956gpUo9ZNCb99YjxG7OaslxZWHfCHAUUfshwqOXmxUIvqLjVO581BT+gM59+QV9tFe6/CGG53tsA1Y7RSdg==}
-    dev: false
 
   /trim-newlines/3.0.1:
     resolution: {integrity: sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==}

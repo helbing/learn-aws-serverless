@@ -252,7 +252,7 @@ def submit_response(event: dict, context, response_status: str, error_message: s
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "4f24b2867ff348c007766093ae6a118440e0bd712ec4b902677cf48ad2b0e1e2.zip",
+          "S3Key": "abaf7e5fe429d746e164ea5ce9b863d89c63f21886bd56c0b64127779086d351.zip",
         },
         "Environment": {
           "Variables": {
