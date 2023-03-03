@@ -34,7 +34,7 @@ export enum imageTypes {
   WEBP = "webp",
 }
 
-export interface ThumbnailStackProps {
+export interface S3ThumbnailStackProps {
   /**
    * The bucket name which will trigger event to lambada
    */
@@ -55,7 +55,7 @@ export interface ThumbnailStackProps {
   readonly imageTypes?: imageTypes[]
 }
 
-export class Thumbnail extends Construct {
+export class S3Thumbnail extends Construct {
   /**
    * Upload bucket
    */
@@ -77,7 +77,7 @@ export class Thumbnail extends Construct {
    * @param props {ThumbnailStackProps}
    * @throws {BucketUndefinedError}
    */
-  constructor(scope: Construct, id: string, props?: ThumbnailStackProps) {
+  constructor(scope: Construct, id: string, props?: S3ThumbnailStackProps) {
     super(scope, id)
 
     const bucketName = props?.bucketName

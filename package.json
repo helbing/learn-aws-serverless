@@ -19,6 +19,7 @@
     "clean": "turbo run clean",
     "build": "turbo run build",
     "test": "jest",
+    "testu": "jest --updateSnapshot",
     "coverage": "jest --coverage"
   },
   "devDependencies": {
@@ -42,6 +43,7 @@
     "jest-config": "^29.4.3",
     "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
+    "projen": "^0.67.70",
     "rimraf": "^4.1.2",
     "ts-jest": "^29.0.5",
     "turbo": "^1.8.3",
