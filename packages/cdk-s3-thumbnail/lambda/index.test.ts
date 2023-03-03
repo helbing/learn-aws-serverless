@@ -18,6 +18,7 @@ describe("Run lambda handler", () => {
   })
 
   test("Expect throw Error, Not supported image type", async () => {
+    const oldEnvs = process.env
     process.env = {
       SUPPORT_IMAGE_TYPES: "jpg,svg",
     } as ThumbnailLambdaEnvs
@@ -35,6 +36,9 @@ describe("Run lambda handler", () => {
         Records: [mockRecord],
       }),
     ).rejects.toThrow(new NotSupportImageTypeError())
+
+    // reset
+    process.env = oldEnvs
   })
 })
 
