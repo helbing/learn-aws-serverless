@@ -252,7 +252,7 @@ def submit_response(event: dict, context, response_status: str, error_message: s
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "abaf7e5fe429d746e164ea5ce9b863d89c63f21886bd56c0b64127779086d351.zip",
+          "S3Key": "c49ef29bdf990df08ea4d2b5b78c6924640f72a463f3841aaa90cb75611cf556.zip",
         },
         "Environment": {
           "Variables": {
@@ -274,6 +274,9 @@ def submit_response(event: dict, context, response_status: str, error_message: s
         },
         "Runtime": "nodejs18.x",
         "Timeout": 60,
+        "TracingConfig": {
+          "Mode": "Active",
+        },
       },
       "Type": "AWS::Lambda::Function",
     },
@@ -312,6 +315,14 @@ def submit_response(event: dict, context, response_status: str, error_message: s
       "Properties": {
         "PolicyDocument": {
           "Statement": [
+            {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
             {
               "Action": [
                 "s3:GetObject*",

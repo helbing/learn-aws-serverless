@@ -5,29 +5,54 @@ import {
   PutObjectCommand,
 } from "@aws-sdk/client-s3"
 import middy from "@middy/core"
+import { Logger, injectLambdaContext } from "@aws-lambda-powertools/logger"
+import { Tracer, captureLambdaHandler } from "@aws-lambda-powertools/tracer"
+import {
+  Metrics,
+  logMetrics,
+  MetricUnits,
+} from "@aws-lambda-powertools/metrics"
+import eventNormalizerMiddleware from "@middy/event-normalizer"
 import { Readable } from "stream"
 import { streamToBuffer } from "@jorgeferrero/stream-to-buffer"
+import { StatusCodes } from "http-status-codes"
 import { ThumbnailLambdaEnvs } from "../src/index"
 import thumbnail from "./thumbnail"
 
-export const handler = middy().handler(lambdaHandler)
+const serviceName = "serverlessS3Thumbnail"
+const logger = new Logger({ serviceName: serviceName })
+const tracer = new Tracer({ serviceName: serviceName })
+const metrics = new Metrics({ serviceName: serviceName })
+tracer.provider.setLogger(logger)
+
+export const handler = middy()
+  .use(injectLambdaContext(logger, { logEvent: true }))
+  .use(captureLambdaHandler(tracer))
+  .use(logMetrics(metrics))
+  .use(eventNormalizerMiddleware())
+  .handler(lambdaHandler)
 
 export async function lambdaHandler(event: S3Event) {
   const envs = process.env as ThumbnailLambdaEnvs
 
   if (envs.DEST_BUCKET == "") {
-    throw new DestBucketUnsetError()
+    metrics.addMetric("ErrorDestinationBucketUnset", MetricUnits.Count, 1)
+
+    throw new Error("Destination bucket unset")
   }
 
   if (event.Records.length == 0 || event.Records.length > 1) {
-    throw new IllegalRecordSizeError()
+    metrics.addMetric("ErrorIllegalRecordSize", MetricUnits.Count, 1)
+
+    throw new Error("Illegal record size, s3 event records = 0 or records > 1")
   }
 
   const record = event.Records[0]
   const key = record.s3.object.key
 
   if (!typeMatch(envs.SUPPORT_IMAGE_TYPES.split(","), key)) {
-    throw new NotSupportImageTypeError()
+    metrics.addMetric("ErrorNotSupportedImageType", MetricUnits.Count, 1)
+    throw new Error("Not supported image type")
   }
 
   const s3 = new S3Client({})
@@ -39,10 +64,17 @@ export async function lambdaHandler(event: S3Event) {
     }),
   )
 
+  tracer.addResponseAsMetadata(image)
+
+  if (image.$metadata.httpStatusCode != StatusCodes.OK) {
+    metrics.addMetric("ErrorS3GetObjectFailed", MetricUnits.Count, 1)
+    throw new Error("S3 get object failed")
+  }
+
   const buffer = await streamToBuffer(image.Body as Readable)
   const resizedBuffer = await thumbnail(buffer, parseInt(envs.RESIZE_WIDTH))
 
-  await s3.send(
+  const result = await s3.send(
     new PutObjectCommand({
       Bucket: envs.DEST_BUCKET,
       Key: record.s3.object.key,
@@ -51,7 +83,17 @@ export async function lambdaHandler(event: S3Event) {
     }),
   )
 
-  return null
+  tracer.addResponseAsMetadata(result)
+
+  if (
+    result.$metadata.httpStatusCode != StatusCodes.OK &&
+    result.$metadata.httpStatusCode != StatusCodes.CREATED
+  ) {
+    metrics.addMetric("ErrorS3PutObjectFailed", MetricUnits.Count, 1)
+    throw new Error("S3 put object failed")
+  }
+
+  metrics.addMetric("HandleSuccess", MetricUnits.Count, 1)
 }
 
 export function typeMatch(supportImageTypes: string[], key: string) {
@@ -62,22 +104,4 @@ export function typeMatch(supportImageTypes: string[], key: string) {
   }
   const imageType = typeMatch[1].toLowerCase()
   return supportImageTypes.includes(imageType)
-}
-
-export class DestBucketUnsetError extends Error {
-  constructor() {
-    super("Destination bucket unset")
-  }
-}
-
-export class IllegalRecordSizeError extends Error {
-  constructor() {
-    super("Illegal record size, s3 event records = 0 or records > 1")
-  }
-}
-
-export class NotSupportImageTypeError extends Error {
-  constructor() {
-    super("Not supported image type")
-  }
 }

@@ -1,6 +1,6 @@
 import { Duration, RemovalPolicy } from "aws-cdk-lib"
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs"
-import { Runtime } from "aws-cdk-lib/aws-lambda"
+import { Runtime, Tracing } from "aws-cdk-lib/aws-lambda"
 import { EventType, Bucket } from "aws-cdk-lib/aws-s3"
 import { LambdaDestination } from "aws-cdk-lib/aws-s3-notifications"
 import { Construct } from "constructs"
@@ -130,6 +130,7 @@ export class S3Thumbnail extends Construct {
         RESIZE_WIDTH: resizWidth.toString(),
         SUPPORT_IMAGE_TYPES: supportImageTypes.toString(),
       } as ThumbnailLambdaEnvs,
+      tracing: Tracing.ACTIVE, // enable x-ray
     })
 
     this.bucket.grantRead(this.handler)
