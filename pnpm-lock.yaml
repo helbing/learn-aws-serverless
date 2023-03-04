@@ -4,6 +4,7 @@ importers:
 
   .:
     specifiers:
+      '@aws-cdk/integ-runner': ^1.195.0
       '@changesets/cli': ^2.26.0
       '@commitlint/cli': ^17.4.4
       '@commitlint/config-conventional': ^17.4.4
@@ -32,6 +33,7 @@ importers:
       turbo: ^1.8.3
       typescript: ^4.9.5
     devDependencies:
+      '@aws-cdk/integ-runner': 1.195.0
       '@changesets/cli': 2.26.0
       '@commitlint/cli': 17.4.4
       '@commitlint/config-conventional': 17.4.4
@@ -127,6 +129,14 @@ packages:
   /@aws-cdk/asset-node-proxy-agent-v5/2.0.68:
     resolution: {integrity: sha512-yYR0ekc3kqRiuhvfiPpYuhRCAAoydzrfZah+ZbHbfZi9H1+fFOzWYeGnbasAjq2gKpLLGO8v93lkYKU0M0xEZQ==}
     dev: false
+
+  /@aws-cdk/integ-runner/1.195.0:
+    resolution: {integrity: sha512-CP94dqs+hRbLfdAhumEGwOB4RGTvQaYoranY/wPEMBx2ic5wCIempqjBsvDZJIM0iD2L/6X/vBVOaAU5vz0WsQ==}
+    engines: {node: '>= 14.15.0'}
+    hasBin: true
+    dependencies:
+      aws-cdk: 1.195.0
+    dev: true
 
   /@aws-cdk/integ-tests-alpha/2.67.0-alpha.0_sdxm3av4xem32og5xqxobfdr6m:
     resolution: {integrity: sha512-w4AZByffgzyf6RJHGkkvZF37CwBNSqzNuycpdnwP0/G+2S0tzViwZbGOIY4QcLGwUgEanBEhPr8vPJaXOZ1uzQ==}
@@ -3039,6 +3049,14 @@ packages:
       - punycode
       - semver
       - yaml
+
+  /aws-cdk/1.195.0:
+    resolution: {integrity: sha512-g/0Lh2FikO/Yy18oVphYnKaxhGTVSo3o6N9sn92bpCPPS0/TMkNPUKXvYxT8Q/xPRW6OFKtscGngPaTgXPUC5A==}
+    engines: {node: '>= 14.15.0'}
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
 
   /aws-lambda/1.0.7:
     resolution: {integrity: sha512-9GNFMRrEMG5y3Jvv+V4azWvc+qNWdWLTjDdhf/zgMlz8haaaLWv0xeAIWxz9PuWUBawsVxy0zZotjCdR3Xq+2w==}
