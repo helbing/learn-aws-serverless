@@ -23,7 +23,6 @@
     "coverage": "jest --coverage"
   },
   "devDependencies": {
-    "@aws-cdk/integ-runner": "^1.195.0",
     "@changesets/cli": "^2.26.0",
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
