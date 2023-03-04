@@ -6,6 +6,7 @@ const config: Config = {
   preset: "ts-jest",
   testRunner: "jest-circus/runner",
   testEnvironment: "node",
+  snapshotResolver: "<rootDir>/snapshotResolver.ts",
 }
 
 export default config

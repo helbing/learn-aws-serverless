@@ -23,6 +23,7 @@ importers:
       jest: ^29.4.3
       jest-circus: ^29.4.3
       jest-config: ^29.4.3
+      jest-snapshot: ^29.4.3
       lint-staged: ^13.1.2
       prettier: ^2.8.4
       projen: ^0.67.70
@@ -50,6 +51,7 @@ importers:
       jest: 29.4.3_jboh4c3iv3wxuja4m36ecyac7e
       jest-circus: 29.4.3
       jest-config: 29.4.3_jboh4c3iv3wxuja4m36ecyac7e
+      jest-snapshot: 29.4.3
       lint-staged: 13.1.2
       prettier: 2.8.4
       projen: 0.67.70
@@ -60,6 +62,7 @@ importers:
 
   packages/cdk-s3-thumbnail:
     specifiers:
+      '@aws-cdk/integ-tests-alpha': 2.67.0-alpha.0
       '@aws-lambda-powertools/logger': ^1.6.0
       '@aws-lambda-powertools/metrics': ^1.6.0
       '@aws-lambda-powertools/tracer': ^1.6.0
@@ -74,12 +77,12 @@ importers:
       aws-cdk-lib: ^2.66.1
       aws-lambda: ^1.0.7
       aws-sdk-client-mock: ^2.0.1
-      aws-xray-sdk-core: ^3.4.1
       constructs: ^10.1.261
       http-status-codes: ^2.2.0
       jest-mock-extended: ^3.0.3
       sharp: ^0.31.3
     dependencies:
+      '@aws-cdk/integ-tests-alpha': 2.67.0-alpha.0_sdxm3av4xem32og5xqxobfdr6m
       '@aws-lambda-powertools/logger': 1.6.0
       '@aws-lambda-powertools/metrics': 1.6.0
       '@aws-lambda-powertools/tracer': 1.6.0
@@ -92,7 +95,6 @@ importers:
       aws-cdk-lib: 2.66.1_constructs@10.1.261
       aws-lambda: 1.0.7
       aws-sdk-client-mock: 2.0.1
-      aws-xray-sdk-core: 3.4.1
       constructs: 10.1.261
       http-status-codes: 2.2.0
       sharp: 0.31.3
@@ -124,6 +126,17 @@ packages:
 
   /@aws-cdk/asset-node-proxy-agent-v5/2.0.68:
     resolution: {integrity: sha512-yYR0ekc3kqRiuhvfiPpYuhRCAAoydzrfZah+ZbHbfZi9H1+fFOzWYeGnbasAjq2gKpLLGO8v93lkYKU0M0xEZQ==}
+    dev: false
+
+  /@aws-cdk/integ-tests-alpha/2.67.0-alpha.0_sdxm3av4xem32og5xqxobfdr6m:
+    resolution: {integrity: sha512-w4AZByffgzyf6RJHGkkvZF37CwBNSqzNuycpdnwP0/G+2S0tzViwZbGOIY4QcLGwUgEanBEhPr8vPJaXOZ1uzQ==}
+    engines: {node: '>= 14.15.0'}
+    peerDependencies:
+      aws-cdk-lib: ^2.67.0
+      constructs: ^10.0.0
+    dependencies:
+      aws-cdk-lib: 2.66.1_constructs@10.1.261
+      constructs: 10.1.261
     dev: false
 
   /@aws-crypto/crc32/3.0.0:

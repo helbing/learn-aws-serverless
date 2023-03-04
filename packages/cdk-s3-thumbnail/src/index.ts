@@ -83,12 +83,12 @@ export class S3Thumbnail extends Construct {
     const bucketName = props?.bucketName
     const destBucketName = bucketName + "-resized"
     if (bucketName == undefined) {
-      throw new BucketUndefinedError()
+      throw new Error("Bucket is undefined")
     }
 
     const resizWidth = props?.resizeWidth || 100
     if (resizWidth < 1 || resizWidth > 300) {
-      throw new ValidateResizeWidthError(1, 300)
+      throw new Error("ResizedWidth between 1 and 300")
     }
 
     const supportImageTypes = props?.imageTypes || [
@@ -96,7 +96,7 @@ export class S3Thumbnail extends Construct {
       imageTypes.JPEG,
     ]
     if (supportImageTypes.length == 0) {
-      throw new NoImageTypesError()
+      throw new Error("No image types")
     }
 
     this.bucket = new Bucket(this, "bucket", {
@@ -140,23 +140,5 @@ export class S3Thumbnail extends Construct {
       EventType.OBJECT_CREATED,
       new LambdaDestination(this.handler),
     )
-  }
-}
-
-export class BucketUndefinedError extends Error {
-  constructor() {
-    super("Bucket is undefined")
-  }
-}
-
-export class ValidateResizeWidthError extends Error {
-  constructor(start: number, end: number) {
-    super(`Validate resizedWidth error, it's between ${start} and ${end}`)
-  }
-}
-
-export class NoImageTypesError extends Error {
-  constructor() {
-    super("No image types")
   }
 }

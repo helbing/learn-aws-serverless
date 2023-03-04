@@ -1,36 +1,30 @@
 import { Template } from "aws-cdk-lib/assertions"
 import { App, Stack } from "aws-cdk-lib"
-import {
-  S3Thumbnail,
-  S3ThumbnailStackProps,
-  BucketUndefinedError,
-  ValidateResizeWidthError,
-  NoImageTypesError,
-} from "../src/index"
+import { S3Thumbnail, S3ThumbnailStackProps } from "./index"
 
 describe("Test constructs build success", () => {
-  test("Expect throw BucketUndefinedError", () => {
+  test("Expect throw Error, Bucket is undefined", () => {
     expect(() => {
       new S3Thumbnail(new Stack(), "thumbnail", {} as S3ThumbnailStackProps)
-    }).toThrow(BucketUndefinedError)
+    }).toThrow(new Error("Bucket is undefined"))
   })
 
-  test("Expect throw ValidateResizeWidthError", () => {
+  test("Expect throw Error, ResizedWidth between 1 and 300", () => {
     expect(() => {
       new S3Thumbnail(new Stack(), "thumbnail", {
         bucketName: "demo",
         resizeWidth: -1,
       } as S3ThumbnailStackProps)
-    }).toThrow(ValidateResizeWidthError)
+    }).toThrow(new Error("ResizedWidth between 1 and 300"))
   })
 
-  test("Expect throw NoImageTypesError", () => {
+  test("Expect throw Error, No image types", () => {
     expect(() => {
       new S3Thumbnail(new Stack(), "thumbnail", {
         bucketName: "demo",
         imageTypes: [],
       } as S3ThumbnailStackProps)
-    }).toThrow(NoImageTypesError)
+    }).toThrow(new Error("No image types"))
   })
 
   test("Expect match snapshot", () => {

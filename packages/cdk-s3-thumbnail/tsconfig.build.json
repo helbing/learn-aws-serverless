@@ -6,6 +6,7 @@
   },
   "exclude": [
     "lambda",
-    "tests"
+    "tests",
+    "**/*.test.ts"
   ]
 }
