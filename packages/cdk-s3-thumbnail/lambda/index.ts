@@ -26,24 +26,26 @@ const metrics = new Metrics({ serviceName: serviceName })
 tracer.provider.setLogger(logger)
 
 export const handler = middy()
+  .use(eventNormalizerMiddleware())
   .use(injectLambdaContext(logger, { logEvent: true }))
   .use(captureLambdaHandler(tracer))
   .use(logMetrics(metrics))
-  .use(eventNormalizerMiddleware())
   .handler(lambdaHandler)
 
 export async function lambdaHandler(event: S3Event) {
   const envs = process.env as ThumbnailLambdaEnvs
 
   if (envs.DEST_BUCKET == "") {
-    metrics.addMetric("ErrorDestinationBucketUnset", MetricUnits.Count, 1)
-
+    metrics.addMetric(
+      "S3ThumbnailErrorDestinationBucketUnset",
+      MetricUnits.Count,
+      1,
+    )
     throw new Error("Destination bucket unset")
   }
 
   if (event.Records.length == 0 || event.Records.length > 1) {
-    metrics.addMetric("ErrorIllegalRecordSize", MetricUnits.Count, 1)
-
+    metrics.addMetric("S3ThumbnailErrorIllegalRecordSize", MetricUnits.Count, 1)
     throw new Error("Illegal record size, s3 event records = 0 or records > 1")
   }
 
@@ -51,7 +53,11 @@ export async function lambdaHandler(event: S3Event) {
   const key = record.s3.object.key
 
   if (!typeMatch(envs.SUPPORT_IMAGE_TYPES.split(","), key)) {
-    metrics.addMetric("ErrorNotSupportedImageType", MetricUnits.Count, 1)
+    metrics.addMetric(
+      "S3ThumbnailErrorNotSupportedImageType",
+      MetricUnits.Count,
+      1,
+    )
     throw new Error("Not supported image type")
   }
 
@@ -67,7 +73,7 @@ export async function lambdaHandler(event: S3Event) {
   tracer.addResponseAsMetadata(image)
 
   if (image.$metadata.httpStatusCode != StatusCodes.OK) {
-    metrics.addMetric("ErrorS3GetObjectFailed", MetricUnits.Count, 1)
+    metrics.addMetric("S3ThumbnailErrorS3GetObjectFailed", MetricUnits.Count, 1)
     throw new Error("S3 get object failed")
   }
 
@@ -89,11 +95,11 @@ export async function lambdaHandler(event: S3Event) {
     result.$metadata.httpStatusCode != StatusCodes.OK &&
     result.$metadata.httpStatusCode != StatusCodes.CREATED
   ) {
-    metrics.addMetric("ErrorS3PutObjectFailed", MetricUnits.Count, 1)
+    metrics.addMetric("S3ThumbnailErrorS3PutObjectFailed", MetricUnits.Count, 1)
     throw new Error("S3 put object failed")
   }
 
-  metrics.addMetric("HandleSuccess", MetricUnits.Count, 1)
+  metrics.addMetric("S3ThumbnailHandleSuccess", MetricUnits.Count, 1)
 }
 
 export function typeMatch(supportImageTypes: string[], key: string) {
