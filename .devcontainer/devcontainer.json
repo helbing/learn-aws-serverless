@@ -1,36 +1,8 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/docker-in-docker
 {
-  "name": "Dev Container",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "build": {
-		"dockerfile": "Dockerfile"
-	},
-
+  "name": "DevContainer",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": true,
-      "configureZshAsDefaultShell": true,
-      "upgradePackages": true,
-      "username": "nobody"
-    },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "enableNonRootDocker": "true",
-      "moby": "true"
-    },
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/devcontainers/features/aws-cli:1": {}
   },
-
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": []},
-
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": ". ${NVM_DIR}/nvm.sh && nvm install --lts",
-
-  // Configure tool-specific properties.
   "customizations": {
     "vscode": {
       "extensions": [
@@ -42,8 +14,5 @@
         "EditorConfig.EditorConfig"
       ]
     }
-  },
-
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  "remoteUser": "nobody"
+  }
 }
