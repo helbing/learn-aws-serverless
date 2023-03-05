@@ -1,6 +1,7 @@
 {
   "name": "DevContainer",
   "build": {
+    "context": ".",
     "dockerfile": "Dockerfile"
   },
   "features": {
