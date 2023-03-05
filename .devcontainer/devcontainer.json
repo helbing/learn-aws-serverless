@@ -1,6 +1,8 @@
 {
   "name": "DevContainer",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "configureZshAsDefaultShell": true
@@ -10,7 +12,8 @@
     },
     "ghcr.io/devcontainers/features/aws-cli:1": {}
   },
-  "postCreateCommand": "nvm install && nvm use && pnpm install",
+  "postCreateCommand": "sh /usr/local/install.sh",
+  "remoteUser": "node",
   "customizations": {
     "vscode": {
       "extensions": [
