@@ -15,6 +15,9 @@
   },
   "postCreateCommand": "sh /usr/local/install.sh",
   "remoteUser": "node",
+  "mounts": [
+    "source=${localEnv:HOME}/.aws,target=/home/node/.aws,type=bind,consistency=cached"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
